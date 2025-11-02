@@ -1,33 +1,56 @@
 import matplotlib.pyplot as plt
 import datetime as dt
 import statistics
-import json
 
-# --- Charger les données ---
-with open("ets2_maps_dlc.json", "r", encoding="utf-8") as f:
-    dlcs_data = json.load(f)
-# Convertir en liste 
-dlcs = [[d["name"], 0, d["reveal_delay"], d["release_delay"]] for d in dlcs_data]
+# Données
+dlcs = [
+    ["Scandinavia", 0, 9, 42],
+    ["Vive la France!", 0, 11, 18],
+    ["Beyond the Baltic Sea", 0, 22, 28],
+    ["Iberia", 0, 15, 21],
+    ["West Balkans", 0, 10, 34],
+    ["Greece", 0, 18, 33],
+]
+italia = ["Italia", 0, 44, 50]
+road_bs = ["Road to the Black Sea", 0, 36, 43]
 
-road_bs = next(d for d in dlcs if "Black Sea" in d[0])
-dlcs = [d for d in dlcs if d != road_bs]
+# # --- Charger les données ---
+# with open("ets2_maps_dlc.json", "r", encoding="utf-8") as f:
+#     dlcs_data = json.load(f)
+# # Convertir en liste 
+# dlcs = [[d["name"], 0, d["reveal_delay"], d["release_delay"]] for d in dlcs_data]
+
+# road_bs = next(d for d in dlcs if "Black Sea" in d[0])
+# dlcs = [d for d in dlcs if d != road_bs]
+
+# --- Demander à l'utilisateur le nom du DLC et la date d'ajout des succès ---
+nom_prochain_dlc = input("Nom du prochain DLC : ")
+date_ajout_succes_str = input("Date d'ajout des succès (format JJ/MM/AAAA) : ")
+date_ajout_succes = dt.datetime.strptime(date_ajout_succes_str, "%d/%m/%Y")
+
+# --- Trouver le dernier DLC sorti (dernière ligne de dlcs) ---
+dernier_dlc = dlcs[-1]
+delai_dernier_reveal = dernier_dlc[2]  # Délai entre succès et reveal
+delai_dernier_release = dernier_dlc[3]  # Délai entre succès et sortie
 
 
 # --- Calcul estimation des dates pour le prochain DLC ---
 
-# Moyennes sans Road to the Black Sea puisque l'écart est très grand
-moyenne_succes_a_reveal_sans_RBS = round(statistics.mean(d[2] for d in dlcs))
-moyenne_reveal_a_release_sans_RBS = round(statistics.mean(d[3] for d in dlcs))
+# Moyennes
+moyenne_succes_a_reveal_sans_aberrations = round(statistics.mean(d[2] for d in dlcs))
+moyenne_succes_a_release_sans_aberrations = round(statistics.mean(d[3] for d in dlcs))
+print(f"Moyenne délai succès - reveal, sans RBS et Italie : {moyenne_succes_a_reveal_sans_aberrations}")
+print(f"Moyenne délai succès - sortie, sans RBS et Italie : {moyenne_succes_a_release_sans_aberrations}")
 
+# Moyennes avec les aberrations (trop grandes valeurs)
+dlcs_avec_aberrations = dlcs.copy()
+dlcs_avec_aberrations.insert(1, italia)
+dlcs_avec_aberrations.insert(3, road_bs)
+moyenne_succes_a_reveal_avec_aberrations = round(statistics.mean(d[2] for d in dlcs_avec_aberrations))
+moyenne_succes_a_release_avec_aberrations = round(statistics.mean(d[3] for d in dlcs_avec_aberrations))
+print(f"Moyenne délai succès - reveal, avec RBS et Italie : {moyenne_succes_a_reveal_avec_aberrations}")
+print(f"Moyenne délai succès - sortie, avec RBS et Italie : {moyenne_succes_a_release_avec_aberrations}")
 
-# Moyennes avec Road to the Black Sea
-dlcs.insert(3, road_bs)
-moyenne_succes_a_reveal_avec_RBS = round(statistics.mean(d[2] for d in dlcs))
-moyenne_reveal_a_release_avec_RBS = round(statistics.mean(d[3] for d in dlcs))
-
-# Ajout des estimations dans dlcs pour le graphe
-dlcs.append(["Nordic Horizons (estimation avec moyennes sans RBS)", 0, moyenne_succes_a_reveal_sans_RBS, moyenne_reveal_a_release_sans_RBS])
-dlcs.append(["Nordic Horizons (estimation avec moyennes)", 0, moyenne_succes_a_reveal_avec_RBS, moyenne_reveal_a_release_avec_RBS])
 
 def ajuster_au_jeudi(date_initiale):
     """
@@ -48,38 +71,55 @@ def ajuster_au_jeudi(date_initiale):
 # --- Définir la date d'ajout des succès du prochain DLC ---
 date_ajout_succes = dt.datetime(2025, 10, 23)
 
-# --- Calculer les estimations à partir des moyennes sans RBS ---
-estimation_date_reveal = date_ajout_succes + dt.timedelta(days=round(moyenne_succes_a_reveal_sans_RBS))
-estimation_date_release = estimation_date_reveal + dt.timedelta(days=round(moyenne_reveal_a_release_sans_RBS))
+# 1. Si les délais sont identiques au dernier DLC sorti
+estimation_date_reveal_dernier = date_ajout_succes + dt.timedelta(days=delai_dernier_reveal)
+estimation_date_release_dernier = date_ajout_succes + dt.timedelta(days=delai_dernier_release)
 
 # --- Afficher les résultats ---
-print("\n=== Estimation pour le DLC Nordic Horizons sans RBS ===")
+print(f"\n=== Estimation pour {nom_prochain_dlc} si les délais sont identiques à {dernier_dlc[0]} ===")
+print(f"Ajout des succès : {date_ajout_succes.strftime('%d %B %Y')}")
+print(f"Reveal de la date de sortie estimée : {estimation_date_reveal_dernier.strftime('%d %B %Y')}")
+print(f"Sortie estimée du DLC estimée : {estimation_date_release_dernier.strftime('%d %B %Y')}")
+print(f"Sortie estimée du DLC (jeudi le plus proche) : {ajuster_au_jeudi(estimation_date_release_dernier).strftime('%d %B %Y')}")
+
+
+# --- Calculer les estimations à partir des moyennes sans aberrations ---
+estimation_date_reveal = date_ajout_succes + dt.timedelta(days=round(moyenne_succes_a_reveal_sans_aberrations))
+estimation_date_release = date_ajout_succes + dt.timedelta(days=round(moyenne_succes_a_release_sans_aberrations))
+
+# --- Afficher les résultats ---
+print(f"\n=== Estimation pour {nom_prochain_dlc} sans aberrations ===")
 print(f"Ajout des succès : {date_ajout_succes.strftime('%d %B %Y')}")
 print(f"Reveal de la date de sortie en moyenne : {estimation_date_reveal.strftime('%d %B %Y')}")
 print(f"Sortie estimée du DLC en moyenne : {estimation_date_release.strftime('%d %B %Y')}")
 print(f"Sortie estimée du DLC (jeudi le plus proche de la moyenne) : {ajuster_au_jeudi(estimation_date_release).strftime('%d %B %Y')}")
 
-# --- Calculer les estimations à partir des moyennes avec RBS ---
-estimation_date_reveal = date_ajout_succes + dt.timedelta(days=round(moyenne_succes_a_reveal_avec_RBS))
-estimation_date_release = estimation_date_reveal + dt.timedelta(days=round(moyenne_reveal_a_release_avec_RBS))
+# --- Calculer les estimations à partir des moyennes avec aberrations ---
+estimation_date_reveal = date_ajout_succes + dt.timedelta(days=round(moyenne_succes_a_reveal_avec_aberrations))
+estimation_date_release = date_ajout_succes + dt.timedelta(days=round(moyenne_succes_a_release_avec_aberrations))
 
 # --- Afficher les résultats ---
-print("\n=== Estimation pour le DLC Nordic Horizons avec RBS ===")
+print(f"\n=== Estimation pour {nom_prochain_dlc} avec aberrations ===")
 print(f"Ajout des succès : {date_ajout_succes.strftime('%d %B %Y')}")
 print(f"Reveal de la date de sortie en moyenne : {estimation_date_reveal.strftime('%d %B %Y')}")
 print(f"Sortie estimée du DLC en moyenne : {estimation_date_release.strftime('%d %B %Y')}")
 print(f"Sortie estimée du DLC (jeudi le plus proche de la moyenne) : {ajuster_au_jeudi(estimation_date_release).strftime('%d %B %Y')}")
+
+# Ajout des estimations dans dlcs pour le graphe
+dlcs_graphe = dlcs_avec_aberrations.copy()
+dlcs_graphe.append([f"{nom_prochain_dlc} (estimation sans RBS et Italie)", 0, moyenne_succes_a_reveal_sans_aberrations, moyenne_succes_a_release_sans_aberrations])
+dlcs_graphe.append([f"{nom_prochain_dlc} (estimation)", 0, moyenne_succes_a_reveal_avec_aberrations, moyenne_succes_a_release_avec_aberrations])
 
 # Trouver le jour le plus tardif
-max_day = max(d[3] for d in dlcs)
+jour_max = max(d[3] for d in dlcs_graphe)
 
 # Tracé
 fig, ax = plt.subplots(figsize=(9, 4))
 colors = ["tab:blue", "tab:orange", "tab:green"]
 labels = ["Ajout succès (J0)", "Reveal date de sortie", "Sortie"]
 
-for i, (name, j0, reveal, release) in enumerate(dlcs):
-    y = len(dlcs) - i
+for i, (name, j0, reveal, release) in enumerate(dlcs_graphe):
+    y = len(dlcs_graphe) - i
     ax.plot([j0, reveal, release], [y]*3, marker='o', linestyle='-', color='gray', alpha=0.6)
     ax.scatter(j0, y, color=colors[0], label=labels[0] if i == 0 else "", zorder=3)
     ax.scatter(reveal, y, color=colors[1], label=labels[1] if i == 0 else "", zorder=3)
@@ -89,10 +129,35 @@ for i, (name, j0, reveal, release) in enumerate(dlcs):
 # Mise en forme
 ax.set_title("Chronologie relative des DLCs ETS2 (J0 = ajout des succès)", fontsize=11)
 ax.set_xlabel("Jours après ajout des succès")
-ax.set_xlim(-1, max_day + 5)
+ax.set_xlim(-1, jour_max + 5)
 ax.set_yticks([])
 ax.legend()
 ax.grid(True, axis='x', linestyle='--', alpha=0.5)
-
 plt.tight_layout()
+
+
+
+# --- Deuxième graphe : Évolution des temps entre ajout des succès/reveal et reveal/sortie ---
+fig2, ax2 = plt.subplots(figsize=(9,4))
+
+# Extraire les noms et les valeurs
+noms = [d[0] for d in dlcs_avec_aberrations]
+valeurs_reveal = [d[2] for d in dlcs_avec_aberrations]
+valeurs_release = [d[3] for d in dlcs_avec_aberrations]
+
+# Tracer les courbes
+ax2.plot(noms, valeurs_reveal, marker='o', label="Jours entre ajout succès et reveal", color="tab:blue")
+ax2.plot(noms, valeurs_release, marker='o', label="Jours entre ajout succès et sortie", color="tab:orange")
+
+# Mise en forme
+ax2.set_title("Évolution des délais entre étapes pour les DLCs ETS2", fontsize=14, pad=20)
+ax2.set_ylabel("Nombre de jours", fontsize=12)
+ax2.set_ylim(0, max(max(valeurs_reveal), max(valeurs_release)) + 10)  # Marge en haut
+ax2.set_xticks(range(len(noms)))
+ax2.set_xticklabels(noms, rotation=45, ha='right', fontsize=10)  # Rotation et alignement
+ax2.legend(fontsize=12)
+ax2.grid(True, linestyle='--', alpha=0.6)
+plt.tight_layout()
+
+
 plt.show()
