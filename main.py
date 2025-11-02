@@ -1,17 +1,17 @@
 import matplotlib.pyplot as plt
 import datetime as dt
 import statistics
+import json
 
-# Données
-dlcs = [
-    ["Vive la France!", 0, 11, 18],
-    ["Italia", 0, 13, 19],
-    ["Beyond the Baltic Sea", 0, 22, 28],
-    ["Iberia", 0, 15, 21],
-    ["West Balkans", 0, 10, 24],
-    ["Greece", 0, 18, 33],
-]
-road_bs = ["Road to the Black Sea", 0, 36, 43]
+# --- Charger les données ---
+with open("ets2_maps_dlc.json", "r", encoding="utf-8") as f:
+    dlcs_data = json.load(f)
+# Convertir en liste 
+dlcs = [[d["name"], 0, d["reveal_delay"], d["release_delay"]] for d in dlcs_data]
+
+road_bs = next(d for d in dlcs if "Black Sea" in d[0])
+dlcs = [d for d in dlcs if d != road_bs]
+
 
 # --- Calcul estimation des dates pour le prochain DLC ---
 

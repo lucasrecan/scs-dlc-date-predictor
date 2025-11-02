@@ -1,0 +1,9 @@
+[
+  { "name": "Vive la France!", "reveal_delay": 11, "release_delay": 18 },
+  { "name": "Italia", "reveal_delay": 13, "release_delay": 19 },
+  { "name": "Beyond the Baltic Sea", "reveal_delay": 22, "release_delay": 28 },
+  { "name": "Iberia", "reveal_delay": 15, "release_delay": 21 },
+  { "name": "West Balkans", "reveal_delay": 10, "release_delay": 24 },
+  { "name": "Greece", "reveal_delay": 18, "release_delay": 33 },
+  { "name": "Road to the Black Sea", "reveal_delay": 36, "release_delay": 43 }
+]
