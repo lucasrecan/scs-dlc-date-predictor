@@ -1,26 +1,27 @@
 import matplotlib.pyplot as plt
 import datetime as dt
 import statistics
+import json
+# # Données
+# dlcs = [
+#     ["Scandinavia", 0, 9, 42],
+#     ["Vive la France!", 0, 11, 18],
+#     ["Italia", 0, 44, 50],
+#     ["Beyond the Baltic Sea", 0, 22, 28],
+#     ["Road to the Black Sea", 0, 36, 43],
+#     ["Iberia", 0, 15, 21],
+#     ["West Balkans", 0, 10, 34],
+#     ["Greece", 0, 18, 33],
+# ]
 
-# Données
-dlcs = [
-    ["Scandinavia", 0, 9, 42],
-    ["Vive la France!", 0, 11, 18],
-    ["Italia", 0, 44, 50],
-    ["Beyond the Baltic Sea", 0, 22, 28],
-    ["Road to the Black Sea", 0, 36, 43],
-    ["Iberia", 0, 15, 21],
-    ["West Balkans", 0, 10, 34],
-    ["Greece", 0, 18, 33],
-]
 
 
-
-# # --- Charger les données ---
-# with open("ets2_maps_dlc.json", "r", encoding="utf-8") as f:
-#     dlcs_data = json.load(f)
-# # Convertir en liste 
-# dlcs = [[d["name"], 0, d["reveal_delay"], d["release_delay"]] for d in dlcs_data]
+# --- Charger les données ---
+jeu = input("Nom du jeu (ets2/ats) : ").strip()
+with open(f"{jeu}_maps_dlc.json", "r", encoding="utf-8") as f:
+    dlcs_data = json.load(f)
+# Convertir en liste 
+dlcs = [[d["name"], 0, d["reveal_delay"], d["release_delay"]] for d in dlcs_data]
 
 # road_bs = next(d for d in dlcs if "Black Sea" in d[0])
 # dlcs = [d for d in dlcs if d != road_bs]
@@ -77,7 +78,7 @@ estimation_date_reveal = date_ajout_succes + dt.timedelta(days=round(moyenne_suc
 estimation_date_release = date_ajout_succes + dt.timedelta(days=round(moyenne_succes_a_release))
 
 # --- Afficher les résultats ---
-print(f"\n=== Estimation pour {nom_prochain_dlc} ===")
+print(f"\n=== Estimation pour {nom_prochain_dlc} avec les moyennes ===")
 print(f"Ajout des succès : {date_ajout_succes.strftime('%d %B %Y')}")
 print(f"Reveal de la date de sortie en moyenne : {estimation_date_reveal.strftime('%d %B %Y')}")
 print(f"Sortie estimée du DLC en moyenne : {estimation_date_release.strftime('%d %B %Y')}")

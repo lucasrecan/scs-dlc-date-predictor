@@ -1,0 +1,82 @@
+[
+  {
+    "name": "Arizona",
+    "reveal_delay": 11,
+    "release_delay": 11
+  },
+  {
+    "name": "New Mexico",
+    "reveal_delay": 58,
+    "release_delay": 65
+  },
+  {
+    "name": "Oregon",
+    "reveal_delay": 17,
+    "release_delay": 24
+  },
+  {
+    "name": "Washington",
+    "reveal_delay": 35,
+    "release_delay": 42
+  },
+  {
+    "name": "Utah",
+    "reveal_delay": 53,
+    "release_delay": 59
+  },
+  {
+    "name": "Idaho",
+    "reveal_delay": 52,
+    "release_delay": 58
+  },
+  {
+    "name": "Colorado",
+    "reveal_delay": 31,
+    "release_delay": 37
+  },
+  {
+    "name": "Wyoming",
+    "reveal_delay": 9,
+    "release_delay": 21
+  },
+  {
+    "name": "Montana",
+    "reveal_delay": 37,
+    "release_delay": 48
+  },
+  {
+    "name": "Texas",
+    "reveal_delay": 24,
+    "release_delay": 34
+  },
+  {
+    "name": "Oklahoma",
+    "reveal_delay": 23,
+    "release_delay": 34
+  },
+  {
+    "name": "Kansas",
+    "reveal_delay": 13,
+    "release_delay": 28
+  },
+  {
+    "name": "Nebraska",
+    "reveal_delay": 10,
+    "release_delay": 17
+  },
+  {
+    "name": "Arkansas",
+    "reveal_delay": 22,
+    "release_delay": 34
+  },
+  {
+    "name": "Missouri",
+    "reveal_delay": 17,
+    "release_delay": 30
+  },
+  {
+    "name": "Iowa",
+    "reveal_delay": 30,
+    "release_delay": 44
+  }
+]
