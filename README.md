@@ -12,15 +12,28 @@ The prediction is calculated from historical data of previous DLCs, using averag
 
 In the console :
 
-=== Estimation for the DLC Nordic Horizons ===\
-Achievements added: 23 October 2025\
-Estimated reveal date (average): 07 November 2025\
-Estimated release date (average): 01 December 2025\
-Estimated release date (nearest Thursday): 04 December 2025
+Nom du jeu (ets2/ats) : ets2 \
+Nom du prochain DLC : Nordic Horizons \
+Date d'ajout des succès (format JJ/MM/AAAA) : 23/10/2025 \
+Moyenne délai succès - reveal : 22 \
+Moyenne délai succès - sortie : 34
+
+=== Estimation pour Nordic Horizons si les délais sont identiques à Greece === \
+Ajout des succès : 23 October 2025 \
+Reveal de la date de sortie estimée : 10 November 2025 \
+Sortie estimée du DLC estimée : 25 November 2025 \
+Sortie estimée du DLC (jeudi le plus proche) : 27 November 2025
+
+=== Estimation pour Nordic Horizons avec les moyennes === \
+Ajout des succès : 23 October 2025 \
+Reveal de la date de sortie en moyenne : 14 November 2025 \
+Sortie estimée du DLC en moyenne : 26 November 2025 \
+Sortie estimée du DLC (jeudi le plus proche de la moyenne) : 27 November 2025
 
 Charts generated : 
 
-*partie à adapter* 
+![chronologie](chrolonogie_ex.png)
+![evolution](evolution_ex.png)
 
 ## Requirements
 

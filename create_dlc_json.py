@@ -48,13 +48,13 @@ def main():
         date_release = recuperer_date(f"Date de sortie de {name}")
 
         # Calcul des écarts
-        days_succes_to_reveal = (date_reveal - date_succes).days
-        days_succes_to_release = (date_release - date_succes).days
+        reveal_delay = (date_reveal - date_succes).days
+        release_delay = (date_release - date_succes).days
 
         dlcs.append({
             "name": name,
-            "days_succes_to_reveal": days_succes_to_reveal,
-            "days_succes_to_release": days_succes_to_release
+            "reveal_delay": reveal_delay,
+            "release_delay": release_delay
         })
 
         again = input("Ajouter un autre DLC ? (o/n) : ").strip().lower()
