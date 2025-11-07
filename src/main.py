@@ -1,3 +1,4 @@
+from time import sleep
 import matplotlib.pyplot as plt
 import datetime as dt
 import statistics
@@ -43,6 +44,7 @@ def ajuster_au_jeudi(date_initiale):
 
 def predire_prochain_dlc(dlcs):
     # --- Demander à l'utilisateur le nom du DLC et la date d'ajout des succès ---
+    print("--------------------------------------------------------------------")
     nom_prochain_dlc = input("Nom du prochain DLC : ")
     date_ajout_succes_str = input("Date d'ajout des succès (format JJ/MM/AAAA) : ")
     date_ajout_succes = dt.datetime.strptime(date_ajout_succes_str, "%d/%m/%Y")
@@ -72,80 +74,99 @@ def predire_prochain_dlc(dlcs):
     print(f"Sortie estimée du DLC en moyenne : {estimation_date_release.strftime('%d %B %Y')}")
     print(f"Sortie estimée du DLC (jeudi le plus proche de la moyenne) : {ajuster_au_jeudi(estimation_date_release).strftime('%d %B %Y')}")
 
-def historique(dlcs, jeu, prochain_dlc=True):
+def historique(dlcs, jeu):
     dlcs_graphe = dlcs.copy()
-    if prochain_dlc:
-        # Ajout de l'estimation dans dlcs pour le graphe
-        dlcs_graphe.append([f"{nom_prochain_dlc} (estimation)", 0, moyennes(dlcs)[0], moyennes(dlcs)[1]])
+    print("--------------------------------------------------------------------")
+    print("Ajoutez une entrée pour les moyennes ?")
+    print("1. Oui")
+    print("2. Non")
+    print("3. Revenir en arrière")
+    choix = "4"
+    while not(choix == "1" or choix == "2" or choix == "3"):
+        choix = input("Choisissez un numéro > ")
+    if choix != "3":
+        if choix == "1":
+            # Ajout de l'estimation dans dlcs pour le graphe
+            dlcs_graphe.append(["Moyennes", 0, moyennes(dlcs)[0], moyennes(dlcs)[1]])
 
-    # Trouver le jour le plus tardif
-    jour_max = max(d[3] for d in dlcs_graphe)
+        # Trouver le jour le plus tardif
+        jour_max = max(d[3] for d in dlcs_graphe)
 
-    # Tracé
-    fig, ax = plt.subplots(figsize=(9, 4))
-    colors = ["tab:blue", "tab:orange", "tab:green"]
-    labels = ["Ajout succès (J0)", "Reveal date de sortie", "Sortie"]
+        # Tracé
+        fig, ax = plt.subplots(figsize=(9, 4))
+        colors = ["tab:blue", "tab:orange", "tab:green"]
+        labels = ["Ajout succès (J0)", "Reveal date de sortie", "Sortie"]
 
-    for i, (name, j0, reveal, release) in enumerate(dlcs_graphe):
-        y = len(dlcs_graphe) - i
-        ax.plot([j0, reveal, release], [y]*3, marker='o', linestyle='-', color='gray', alpha=0.6)
-        ax.scatter(j0, y, color=colors[0], label=labels[0] if i == 0 else "", zorder=3)
-        ax.scatter(reveal, y, color=colors[1], label=labels[1] if i == 0 else "", zorder=3)
-        ax.scatter(release, y, color=colors[2], label=labels[2] if i == 0 else "", zorder=3)
-        ax.text(release + 1, y, name, va='center', fontsize=9)
+        for i, (name, j0, reveal, release) in enumerate(dlcs_graphe):
+            y = len(dlcs_graphe) - i
+            ax.plot([j0, reveal, release], [y]*3, marker='o', linestyle='-', color='gray', alpha=0.6)
+            ax.scatter(j0, y, color=colors[0], label=labels[0] if i == 0 else "", zorder=3)
+            ax.scatter(reveal, y, color=colors[1], label=labels[1] if i == 0 else "", zorder=3)
+            ax.scatter(release, y, color=colors[2], label=labels[2] if i == 0 else "", zorder=3)
+            ax.text(release + 1, y, name, va='center', fontsize=9)
 
-    # Mise en forme
-    ax.set_title(f"Chronologie relative des DLCs {jeu.upper()} (J0 = ajout des succès)", fontsize=11)
-    ax.set_xlabel("Jours après ajout des succès")
-    ax.set_xlim(-1, jour_max + 5)
-    ax.set_yticks([])
-    ax.legend()
-    ax.grid(True, axis='x', linestyle='--', alpha=0.5)
-    plt.tight_layout()
-    plt.show()
+        # Mise en forme
+        ax.set_title(f"Chronologie relative des DLCs {jeu.upper()} (J0 = ajout des succès)", fontsize=11)
+        ax.set_xlabel("Jours après ajout des succès")
+        ax.set_xlim(-1, jour_max + 5)
+        ax.set_yticks([])
+        ax.legend()
+        ax.grid(True, axis='x', linestyle='--', alpha=0.5)
+        plt.tight_layout()
+        plt.show()
 
 # --- Deuxième graphe : Évolution des temps entre ajout des succès/reveal et reveal/sortie ---
-def evolution(dlcs, jeu, prochain_dlc=True):
+def evolution(dlcs, jeu):
     dlcs_graphe = dlcs.copy()
-    if prochain_dlc:
-        # Ajout de l'estimation dans dlcs pour le graphe
-        dlcs_graphe.append([f"{nom_prochain_dlc} (estimation)", 0, moyennes(dlcs)[0], moyennes(dlcs)[1]])
+    print("--------------------------------------------------------------------")
+    print("Ajoutez une entrée pour les moyennes ?")
+    print("1. Oui")
+    print("2. Non")
+    print("3. Revenir en arrière")
+    choix = "4"
+    while not(choix == "1" or choix == "2" or choix == "3"):
+        choix = input("Choisissez un numéro > ")
+    if choix != 3:
+        if choix == 1:
+            # Ajout de l'estimation dans dlcs pour le graphe
+            dlcs_graphe.append(["Moyennes", 0, moyennes(dlcs)[0], moyennes(dlcs)[1]])
 
-    fig2, ax2 = plt.subplots(figsize=(9,4))
+        fig2, ax2 = plt.subplots(figsize=(9,4))
 
-    # Extraire les noms et les valeurs
-    noms = [d[0] for d in dlcs_graphe]
-    valeurs_reveal = [d[2] for d in dlcs_graphe]
-    valeurs_release = [d[3] for d in dlcs_graphe]
+        # Extraire les noms et les valeurs
+        noms = [d[0] for d in dlcs_graphe]
+        valeurs_reveal = [d[2] for d in dlcs_graphe]
+        valeurs_release = [d[3] for d in dlcs_graphe]
 
-    # Tracer les courbes
-    ax2.plot(noms, valeurs_reveal, marker='o', label="Jours entre ajout succès et reveal", color="tab:blue")
-    ax2.plot(noms, valeurs_release, marker='o', label="Jours entre ajout succès et sortie", color="tab:orange")
+        # Tracer les courbes
+        ax2.plot(noms, valeurs_reveal, marker='o', label="Jours entre ajout succès et reveal", color="tab:blue")
+        ax2.plot(noms, valeurs_release, marker='o', label="Jours entre ajout succès et sortie", color="tab:orange")
 
-    # Mise en forme
-    ax2.set_title(f"Évolution des délais entre étapes pour les DLCs {jeu.upper()}", fontsize=14, pad=20)
-    ax2.set_ylabel("Nombre de jours", fontsize=12)
-    ax2.set_ylim(0, max(max(valeurs_reveal), max(valeurs_release)) + 10)  # Marge en haut
-    ax2.set_xticks(range(len(noms)))
-    ax2.set_xticklabels(noms, rotation=45, ha='right', fontsize=10)  # Rotation et alignement
-    ax2.legend(fontsize=12)
-    ax2.grid(True, linestyle='--', alpha=0.6)
-    plt.tight_layout()
+        # Mise en forme
+        ax2.set_title(f"Évolution des délais entre étapes pour les DLCs {jeu.upper()}", fontsize=14, pad=20)
+        ax2.set_ylabel("Nombre de jours", fontsize=12)
+        ax2.set_ylim(0, max(max(valeurs_reveal), max(valeurs_release)) + 10)  # Marge en haut
+        ax2.set_xticks(range(len(noms)))
+        ax2.set_xticklabels(noms, rotation=45, ha='right', fontsize=10)  # Rotation et alignement
+        ax2.legend(fontsize=12)
+        ax2.grid(True, linestyle='--', alpha=0.6)
+        plt.tight_layout()
 
 
     plt.show()
 
 def afficher_accueil():
+        print("--------------------------------------------------------------------")
         print("Sélectionnez le jeu sur lequel vous voulez faire vos analyses.")
         print("1. Euro Truck Simulator 2")
         print("2. American Truck Simulator")
-        print("Choisissez un numéro > ")
-        return input()
+        return input("Choisissez un numéro > ")
 
 def main():
     choix = ""
     jeu = ""
-    print("écrire q pour quitter à tout moment")
+    print("Ecrire q pour quitter à tout moment.")
+    sleep(0.25)
     while choix != "q":
         choix = afficher_accueil()
         if choix == "1":
@@ -154,22 +175,26 @@ def main():
             jeu = "ats"
         dlcs = load_data(jeu)
         while choix != "q" and choix != "5":
+            print("--------------------------------------------------------------------")
             print("1. Afficher les moyennes des délais entre l'ajout des succès du DLC et la date d'annonce/de sortie")
             print("2. Afficher l'historique des délais pour chaque DLC sorti dans un graphe")
             print("3. Afficher l'évolution des délais pour chaque DLC sorti dans un graphe différent")
             print("4. Prédire les dates du prochain dlc (si ses succès ont été ajoutés)")
             print("5. Revenir en arrière")
-            choix = input()
+            choix = input("Choisissez un numéro > ")
             if choix == "1":
                 moyenne_srev, moyenne_srel = moyennes(dlcs)
                 print(f"Moyenne délai succès - reveal : {moyenne_srev}")
                 print(f"Moyenne délai succès - sortie : {moyenne_srel}")
+                input("\nAppuyez sur entrée pour continuer...")
             elif choix == "2":
-                historique(dlcs, jeu, prochain_dlc=False)
+                historique(dlcs, jeu)
             elif choix == "3":
-                evolution(dlcs, jeu, prochain_dlc=False)
+                evolution(dlcs, jeu)
             elif choix == "4":
                 predire_prochain_dlc(dlcs)
+                print("--------------------------------------------------------------------")
+                input("\nAppuyez sur entrée pour continuer...")
 
 if __name__ == "__main__":
     main()
