@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import datetime as dt
 import statistics
 import json
-nom_prochain_dlc = "Prochain DLC"
+
 # --- Charger les données ---
 def load_data(jeu):
     """Renvoie la liste des dlcs de maps sortis en fonction du jeu voulu.
@@ -22,15 +22,30 @@ def load_data(jeu):
 
 # Moyennes
 def moyennes(dlcs):
+    """Calcul des moyennes des dates des dlcs.
+
+    Args:
+        dlcs (liste): liste des dlcs sur laquelle calculer les moyennes de temps passé entre l'ajout
+        des succès et le reveal/la date de sortie
+
+    Returns:
+        (int, int): (moyenne du temps passé entre l'ajout des succès et le reveal de la date de sortie,
+                     moyenne du temps passé entre l'ajout des succès et la date de sortie)
+    """
     moyenne_succes_a_reveal = round(statistics.mean(d[2] for d in dlcs))
     moyenne_succes_a_release = round(statistics.mean(d[3] for d in dlcs))
     return moyenne_succes_a_reveal, moyenne_succes_a_release
 
 def ajuster_au_jeudi(date_initiale):
-    """
-    Retourne la date du jeudi le plus proche de la date donnée.
+    """Retourne la date du jeudi le plus proche de la date donnée.
     Si la date est à égale distance entre deux jeudis (ex : dimanche/lundi),
     la fonction choisit le jeudi suivant.
+
+    Args:
+        date_initiale (datetime): la date calculée
+
+    Returns:
+        datetime: la date du jeudi le plus proche de la date calculée au départ
     """
     # Différence en jours entre le jeudi (3) et le jour actuel
     diff = 3 - date_initiale.weekday()
@@ -43,7 +58,16 @@ def ajuster_au_jeudi(date_initiale):
     return date_initiale + dt.timedelta(days=diff)
 
 def predire_prochain_dlc(dlcs):
-    # --- Demander à l'utilisateur le nom du DLC et la date d'ajout des succès ---
+    """Demande à l'utilisateur le nom du DLC (pour garder une cohérence dans la console) et la date d'ajout
+    des succès puis :
+    A partir des moyennes, affiche la date du reveal de la date de sortie en moyenne, la date de sortie estimée en
+    moyenne et la date de sortie estimée en moyenne en prenant le jeudi le plus proche de la date précédente.
+    En prenant des délais identiques au précédent DLC sorti, affiche la date de reveal de la date de sortie
+    estimée, la date de sortie estimée et la date de sortie estimée en prenant le jeudi le plus proche.
+
+    Args:
+        dlcs (liste): la liste des dlcs et leurs délais
+    """
     print("--------------------------------------------------------------------")
     nom_prochain_dlc = input("Nom du prochain DLC : ")
     date_ajout_succes_str = input("Date d'ajout des succès (format JJ/MM/AAAA) : ")
