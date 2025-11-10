@@ -20,7 +20,7 @@ Choose a number > 1
 1. Show average delays between success addition and reveal/release
 2. Show historical delays for each released DLC in a timeline graph
 3. Show evolution of delays between steps in a different graph
-4. Predict dates for the next DLC (if its successes were added)
+4. Predict dates for the next DLC (if its achievements were added)
 5. Go back
 Choose a number > 4
 --------------------------------------------------------------------
@@ -42,7 +42,7 @@ Average release (closest Thursday): 27 November 2025
 
 Press Enter to continue...
 --------------------------------------------------------------------
-1. Show average delays between success addition and reveal/release
+1. Show average delays between achievements addition and reveal/release
 2. Show historical delays for each released DLC in a timeline graph
 3. Show evolution of delays between steps in a different graph
 4. Predict dates for the next DLC (if its successes were added)
