@@ -191,8 +191,8 @@ def main():
             choice = input("Choose a number > ")
             if choice == "1":
                 avg_srev, avg_srel = averages(dlcs)
-                print(f"Average delay success → reveal: {avg_srev}")
-                print(f"Average delay success → release: {avg_srel}")
+                print(f"Average delay success → reveal: {avg_srev} days")
+                print(f"Average delay success → release: {avg_srel} days")
                 input("\nPress Enter to continue...")
             elif choice == "2":
                 history(dlcs, game)
