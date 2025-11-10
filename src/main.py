@@ -22,18 +22,18 @@ def load_data(game):
 
 # Averages
 def averages(dlcs):
-    """Computes the average time between success addition and reveal/release.
+    """Computes the average time between achievements addition and reveal/release.
 
     Args:
         dlcs (list): list of dlcs to compute the averages for
 
     Returns:
-        (int, int): (average time between success addition and reveal,
-                     average time between success addition and release)
+        (int, int): (average time between achievements addition and reveal,
+                     average time between achievements addition and release)
     """
-    avg_success_to_reveal = round(statistics.mean(d[2] for d in dlcs))
-    avg_success_to_release = round(statistics.mean(d[3] for d in dlcs))
-    return avg_success_to_reveal, avg_success_to_release
+    avg_achievements_to_reveal = round(statistics.mean(d[2] for d in dlcs))
+    avg_achievements_to_release = round(statistics.mean(d[3] for d in dlcs))
+    return avg_achievements_to_reveal, avg_achievements_to_release
 
 def adjust_to_thursday(initial_date):
     """Returns the date of the Thursday closest to the given date.
@@ -55,7 +55,7 @@ def adjust_to_thursday(initial_date):
 
 def predict_next_dlc(dlcs):
     """Asks the user for the name of the next DLC (for console coherence)
-    and the success addition date, then:
+    and the achievements addition date, then:
     Based on averages, prints the estimated reveal date and release date,
     and the release date adjusted to the closest Thursday.
     Using the same delays as the last DLC, it also prints the same estimates.
@@ -65,27 +65,27 @@ def predict_next_dlc(dlcs):
     """
     print("--------------------------------------------------------------------")
     next_dlc_name = input("Next DLC name: ")
-    success_date_str = input("Date of success addition (format DD/MM/YYYY): ")
-    success_date = dt.datetime.strptime(success_date_str, "%d/%m/%Y")
+    achievements_date_str = input("Date of achievements addition (format DD/MM/YYYY): ")
+    achievements_date = dt.datetime.strptime(achievements_date_str, "%d/%m/%Y")
 
     last_dlc = dlcs[-1]
     last_reveal_delay = last_dlc[2]
     last_release_delay = last_dlc[3]
 
-    estimated_reveal_last = success_date + dt.timedelta(days=last_reveal_delay)
-    estimated_release_last = success_date + dt.timedelta(days=last_release_delay)
+    estimated_reveal_last = achievements_date + dt.timedelta(days=last_reveal_delay)
+    estimated_release_last = achievements_date + dt.timedelta(days=last_release_delay)
 
     print(f"\n=== Estimate for {next_dlc_name} if delays are the same as {last_dlc[0]} (last release) ===")
-    print(f"Success addition: {success_date.strftime('%d %B %Y')}")
+    print(f"achievements addition: {achievements_date.strftime('%d %B %Y')}")
     print(f"Estimated reveal date: {estimated_reveal_last.strftime('%d %B %Y')}")
     print(f"Estimated release date: {estimated_release_last.strftime('%d %B %Y')}")
     print(f"Estimated release (closest Thursday): {adjust_to_thursday(estimated_release_last).strftime('%d %B %Y')}")
 
-    estimated_reveal_avg = success_date + dt.timedelta(days=round(averages(dlcs)[0]))
-    estimated_release_avg = success_date + dt.timedelta(days=round(averages(dlcs)[1]))
+    estimated_reveal_avg = achievements_date + dt.timedelta(days=round(averages(dlcs)[0]))
+    estimated_release_avg = achievements_date + dt.timedelta(days=round(averages(dlcs)[1]))
 
     print(f"\n=== Estimate for {next_dlc_name} based on averages ===")
-    print(f"Success addition: {success_date.strftime('%d %B %Y')}")
+    print(f"achievements addition: {achievements_date.strftime('%d %B %Y')}")
     print(f"Average reveal date: {estimated_reveal_avg.strftime('%d %B %Y')}")
     print(f"Average release date: {estimated_release_avg.strftime('%d %B %Y')}")
     print(f"Average release (closest Thursday): {adjust_to_thursday(estimated_release_avg).strftime('%d %B %Y')}")
@@ -108,7 +108,7 @@ def history(dlcs, game):
 
         fig, ax = plt.subplots(figsize=(9, 4))
         colors = ["tab:blue", "tab:orange", "tab:green"]
-        labels = ["Success addition (Day 0)", "Release date reveal", "Release"]
+        labels = ["achievements addition (Day 0)", "Release date reveal", "Release"]
 
         for i, (name, j0, reveal, release) in enumerate(dlcs_graph):
             y = len(dlcs_graph) - i
@@ -118,8 +118,8 @@ def history(dlcs, game):
             ax.scatter(release, y, color=colors[2], label=labels[2] if i == 0 else "", zorder=3)
             ax.text(release + 1, y, name, va='center', fontsize=9)
 
-        ax.set_title(f"Relative timeline of {game.upper()} DLCs (Day 0 = success addition)", fontsize=11)
-        ax.set_xlabel("Days after success addition")
+        ax.set_title(f"Relative timeline of {game.upper()} DLCs (Day 0 = achievements addition)", fontsize=11)
+        ax.set_xlabel("Days after achievements addition")
         ax.set_xlim(-1, max_day + 5)
         ax.set_yticks([])
         ax.legend()
@@ -127,7 +127,7 @@ def history(dlcs, game):
         plt.tight_layout()
         plt.show()
 
-# --- Second graph: evolution of delays between success/reveal/release ---
+# --- Second graph: evolution of delays between achievements/reveal/release ---
 def evolution(dlcs, game):
     dlcs_graph = dlcs.copy()
     print("--------------------------------------------------------------------")
@@ -148,8 +148,8 @@ def evolution(dlcs, game):
         reveal_values = [d[2] for d in dlcs_graph]
         release_values = [d[3] for d in dlcs_graph]
 
-        ax2.plot(names, reveal_values, marker='o', label="Days between success addition and reveal", color="tab:blue")
-        ax2.plot(names, release_values, marker='o', label="Days between success addition and release", color="tab:orange")
+        ax2.plot(names, reveal_values, marker='o', label="Days between achievements addition and reveal", color="tab:blue")
+        ax2.plot(names, release_values, marker='o', label="Days between achievements addition and release", color="tab:orange")
 
         ax2.set_title(f"Evolution of delays between stages for {game.upper()} DLCs", fontsize=14, pad=20)
         ax2.set_ylabel("Number of days", fontsize=12)
@@ -183,16 +183,16 @@ def main():
         dlcs = load_data(game)
         while choice != "q" and choice != "5":
             print("--------------------------------------------------------------------")
-            print("1. Show average delays between success addition and reveal/release")
+            print("1. Show average delays between achievements addition and reveal/release")
             print("2. Show historical delays for each released DLC in a timeline graph")
             print("3. Show evolution of delays between steps in a different graph")
-            print("4. Predict dates for the next DLC (if its successes were added)")
+            print("4. Predict dates for the next DLC (if its achievements were added)")
             print("5. Go back")
             choice = input("Choose a number > ")
             if choice == "1":
                 avg_srev, avg_srel = averages(dlcs)
-                print(f"Average delay success → reveal: {avg_srev} days")
-                print(f"Average delay success → release: {avg_srel} days")
+                print(f"Average delay achievements → reveal: {avg_srev} days")
+                print(f"Average delay achievements → release: {avg_srel} days")
                 input("\nPress Enter to continue...")
             elif choice == "2":
                 history(dlcs, game)
