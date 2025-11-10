@@ -138,8 +138,8 @@ def evolution(dlcs, game):
     choice = "4"
     while not(choice == "1" or choice == "2" or choice == "3"):
         choice = input("Choose a number > ")
-    if choice != 3:
-        if choice == 1:
+    if choice != "3":
+        if choice == "1":
             dlcs_graph.append(["Averages", 0, averages(dlcs)[0], averages(dlcs)[1]])
 
         fig2, ax2 = plt.subplots(figsize=(9,4))
