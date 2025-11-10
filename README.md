@@ -60,9 +60,6 @@ pip install matplotlib
     ```bash
     python main.py
     ```
-3. The script will print estimated dates in the console and open multiple charts comparing the timing of past DLCs.
-
-*partie à adapter* 
 
 ## Notes
 
