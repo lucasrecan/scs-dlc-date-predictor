@@ -28,7 +28,7 @@ def recuperer_json():
                 print(f"{len(data)} DLC(s) déjà présent(s) dans {JSON_FILE.name}")
                 return data
         except json.JSONDecodeError:
-            print("⚠️ Fichier JSON corrompu ou vide. Un nouveau sera créé.")
+            print("Fichier JSON corrompu ou vide. Un nouveau sera créé.")
             return []
     return []
 
