@@ -103,7 +103,7 @@ def history(dlcs, game):
     if choice != "3":
         if choice == "1":
             dlcs_graph.append(["Averages", 0, averages(dlcs)[0], averages(dlcs)[1]])
-
+            # dlcs_graph.append(["Nordic Horizons", 0, 21, 35]) # pour comparer avec les moyennes
         max_day = max(d[3] for d in dlcs_graph)
 
         fig, ax = plt.subplots(figsize=(9, 4))
