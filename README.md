@@ -9,27 +9,48 @@ The prediction is calculated from historical data of previous DLCs, using averag
 
 
 ## Example Output
+```
+Type q to quit at any time.
+--------------------------------------------------------------------
+Select the game you want to analyze.
+1. Euro Truck Simulator 2
+2. American Truck Simulator
+Choose a number > 1
+--------------------------------------------------------------------
+1. Show average delays between achievements addition and reveal/release
+2. Show historical delays for each released DLC in a timeline graph
+3. Show evolution of delays between steps in a different graph
+4. Predict dates for the next DLC (if its achievements were added)
+5. Go back
+Choose a number > 4
+--------------------------------------------------------------------
+Next DLC name: Nordic Horizons
+Date of achievements addition (format DD/MM/YYYY): 23/10/2025
 
-In the console :
+=== Estimate for Nordic Horizons if delays are the same as Greece (last release) ===
+Achievements addition: 23 October 2025
+Estimated reveal date: 10 November 2025
+Estimated release date: 25 November 2025
+Estimated release (closest Thursday): 27 November 2025
 
-Nom du jeu (ets2/ats) : ets2 \
-Nom du prochain DLC : Nordic Horizons \
-Date d'ajout des succès (format JJ/MM/AAAA) : 23/10/2025 \
-Moyenne délai succès - reveal : 22 \
-Moyenne délai succès - sortie : 34
+=== Estimate for Nordic Horizons based on averages ===
+Achievements addition: 23 October 2025
+Average reveal date: 14 November 2025
+Average release date: 26 November 2025
+Average release (closest Thursday): 27 November 2025
+--------------------------------------------------------------------
 
-=== Estimation pour Nordic Horizons si les délais sont identiques à Greece === \
-Ajout des succès : 23 October 2025 \
-Reveal de la date de sortie estimée : 10 November 2025 \
-Sortie estimée du DLC estimée : 25 November 2025 \
-Sortie estimée du DLC (jeudi le plus proche) : 27 November 2025
-
-=== Estimation pour Nordic Horizons avec les moyennes === \
-Ajout des succès : 23 October 2025 \
-Reveal de la date de sortie en moyenne : 14 November 2025 \
-Sortie estimée du DLC en moyenne : 26 November 2025 \
-Sortie estimée du DLC (jeudi le plus proche de la moyenne) : 27 November 2025
-
+Press Enter to continue...
+--------------------------------------------------------------------
+1. Show average delays between achievements addition and reveal/release
+2. Show historical delays for each released DLC in a timeline graph
+3. Show evolution of delays between steps in a different graph
+4. Predict dates for the next DLC (if its achievements were added)
+5. Go back
+Choose a number > 1
+Average delay achievements → reveal: 22 days
+Average delay achievements → release: 34 days
+```
 Charts generated : 
 
 ![chronologie](chrolonogie_ex.png)
@@ -60,9 +81,6 @@ pip install matplotlib
     ```bash
     python main.py
     ```
-3. The script will print estimated dates in the console and open multiple charts comparing the timing of past DLCs.
-
-*partie à adapter* 
 
 ## Notes
 
