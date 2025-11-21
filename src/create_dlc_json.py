@@ -62,7 +62,7 @@ def main():
             break
 
     # Sauvegarde dans un fichier JSON
-    with open(f"{jeu}_maps_dlc.json", "w", encoding="utf-8") as f:
+    with open(f"data/{jeu}_maps_dlc.json", "w", encoding="utf-8") as f:
         json.dump(dlcs, f, ensure_ascii=False, indent=2)
 
     print(f"\n{len(dlcs)} DLC(s) enregistré(s) dans {jeu}_dlcs.json")
