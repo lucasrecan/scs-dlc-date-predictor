@@ -78,5 +78,10 @@
     "name": "Iowa",
     "reveal_delay": 30,
     "release_delay": 44
+  },
+  {
+    "name": "Louisiana",
+    "reveal_delay": 31,
+    "release_delay": 44
   }
 ]
